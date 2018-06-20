@@ -6,8 +6,6 @@
 
 AF_DCMotor motorL(1);
 
-//unsigned long time = 0;
-//unsigned long timeMode = 0;
 unsigned long targetTimeMode = 0;
 unsigned long nextSpeedChange = 0;
 unsigned int targetSpeed = MINSPEED;
@@ -24,7 +22,6 @@ typedef struct{
 } mode;
 
 //minspeed, maxspeed, mintime, maxtime, forward/backward (1/-1), randomspeed 1/0
-
 const mode modeForward = {MINSPEED, MAXSPEED, 2000, 30000, true, true};
 const mode modeBackward = {MINSPEED, MAXSPEED, 500, 1000, false, true};
 const mode modeDrop = {0, 0, 1000, 1000, true, false};
@@ -33,19 +30,9 @@ const mode modeEscalate = {MAXSPEED, MAXSPEED, 5000, 5000, true, false};
 mode modes[] = {modeForward, modeBackward, modeDrop, modeEscalate};
 mode *currentMode = NULL;
 
-
-//void setSpeed(int newspeed) {
-//  if (newspeed > MAXSPEED + 5){ // guard for algorithm fail
-//    speed = 0;
-//  } else {
-//    speed = newspeed;
-//  }
-//}
-
 void nextMode() {
   int index = random(0, sizeof(modes) / sizeof(mode));
   currentMode = &modes[index];
-  //timeMode = millis();
   targetTimeMode = millis() + random(currentMode->mintime, currentMode->maxtime);
   targetSpeed = random(currentMode->minspeed, currentMode->maxspeed);
 
